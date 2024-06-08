@@ -1,4 +1,4 @@
-.TH minimap2 1 "29 April 2023" "minimap2-2.26 (r1175)" "Bioinformatics tools"
+.TH minimap2 1 "18 December 2021" "minimap2-2.24 (r1122)" "Bioinformatics tools"
 .SH NAME
 .PP
 minimap2 - mapping and alignment between collections of DNA sequences
@@ -101,7 +101,7 @@ on the HPC sequence.
 .BI -I \ NUM
 Load at most
 .I NUM
-target bases into RAM for indexing [8G]. If there are more than
+target bases into RAM for indexing [4G]. If there are more than
 .I NUM
 bases in
 .IR target.fa ,
@@ -275,7 +275,7 @@ and disable a heurstic to save unmapped subsequences and disables
 .BR --mask-len .
 .TP
 .BI --mask-len \ NUM
-Keep an alignment if dropping it leaves an unaligned region on query longer than
+Keep an alignment if dropping it leaves an unaligned region on query longer thn
 .IR INT
 [inf]. Effective without
 .BR --hard-mask-level .
@@ -387,8 +387,7 @@ and may be different from the total alignment score.
 How to find canonical splicing sites GT-AG -
 .BR f :
 transcript strand;
-.BR b :
-both strands;
+.BR b : both        strands;
 .BR n :
 no attempt to match GT-AG [n]
 .TP
@@ -541,72 +540,50 @@ Filter out query sequences longer than
 .IR NUM .
 .TP
 .B --paf-no-hit
-In PAF, output unmapped queries; the strand and the reference name fields are
-set to `*'. Warning: some paftools.js commands may not work with such output
-for the moment.
-.TP
-.B --sam-hit-only
-In SAM, don't output unmapped reads.
-.TP
-.B --version
-Print version number to stdout
-.SS Preset options
-.TP 10
-.BI -x \ STR
-Preset []. This option applies multiple options at the same time. It should be
-applied before other options because options applied later will overwrite the
-values set by
-.BR -x .
-Available
-.I STR
-are:
-.RS
-.TP 10
-.B map-ont
-Align noisy long reads of ~10% error rate to a reference genome. This is the
-default mode.
-.TP
-.B map-hifi
-Align PacBio high-fidelity (HiFi) reads to a reference genome
-.RB ( -k19
-.B -w19 -U50,500 -g10k -A1 -B4 -O6,26 -E2,1
-.BR -s200 ).
-.TP
-.B map-pb
-Align older PacBio continuous long (CLR) reads to a reference genome
-.RB ( -Hk19 ).
-.TP
-.B asm5
-Long assembly to reference mapping
-.RB ( -k19
-.B -w19 -U50,500 --rmq -r1k,100k -g10k -A1 -B19 -O39,81 -E3,1 -s200 -z200
-.BR -N50 ).
-Typically, the alignment will not extend to regions with 5% or higher sequence
-divergence. Only use this preset if the average divergence is far below 5%.
-.TP
-.B asm10
-Long assembly to reference mapping
-.RB ( -k19
-.B -w19 -U50,500 --rmq -r1k,100k -g10k -A1 -B9 -O16,41 -E2,1 -s200 -z200
-.BR -N50 ).
-Up to 10% sequence divergence.
-.TP
-.B asm20
-Long assembly to reference mapping
-.RB ( -k19
-.B -w10 -U50,500 --rmq -r1k,100k -g10k -A1 -B4 -O6,26 -E2,1 -s200 -z200
-.BR -N50 ).
-Up to 20% sequence divergence.
-.TP
-.B splice
-Long-read spliced alignment
-.RB ( -k15
-.B -w5 --splice -g2k -G200k -A1 -B2 -O2,32 -E1,0 -C9 -z200 -ub --junc-bonus=9 --cap-sw-mem=0
-.BR --splice-flank=yes ).
-In the splice mode, 1) long deletions are taken as introns and represented as
-the
-.RB ` N '
-CIGAR operator; 2) long insertions are disabled; 3) deletion and insertion gap
+In PAF, output unmapped queries;
+the strand and the reference name fields are set to `
+        *'. Warning: some paftools.js commands may not work with such output for the
+                  moment..TP.B-- sam -
+    hit - only In SAM,
+    don't output unmapped reads. .TP.B-- version Print version number to
+            stdout.SS Preset options.TP 10.BI -
+        x \ STR Preset[].This option applies multiple options at the same
+                time.It should be applied before other options because options
+                applied later will overwrite the values set by.BR -
+        x.Available.I STR                                   are :
+        .RS.TP 10.B                                         map -
+            ont Align noisy long reads of ~10 % error rate to a reference genome
+        .This is the default mode..TP.B         map -
+            hifi Align PacBio                   high -
+            fidelity(HiFi) reads to a reference genome
+        .RB(-k19.B - w19 - U50, 500 - g10k - A1 - B4 - O6, 26 - E2, 1.BR - s200)
+        ..TP.B                                 map -
+            pb Align older PacBio              continuous long(CLR)
+                reads to a reference           genome.RB(-Hk19)
+        ..TP.B asm5 Long assembly to reference mapping
+        .RB(-k19.B - w19 - U50, 500 --rmq - r1k, 100k - g10k - A1 - B19 - O39,
+            81 - E3, 1 - s200 - z200.BR - N50)
+        .Typically,
+    the alignment will not extend to regions with 5 % or
+        higher sequence divergence.Only use this preset if the average
+                    divergence is far           below 5 %
+        ..TP.B asm10 Long assembly to reference mapping
+        .RB(-k19.B - w19 - U50, 500 --rmq - r1k, 100k - g10k - A1 - B9 - O16,
+            41 - E2, 1 - s200 - z200.BR - N50)
+        .Up                                 to 10 %
+                sequence                    divergence..TP
+        .B asm20 Long assembly to reference mapping
+        .RB(-k19.B - w10 - U50, 500 --rmq - r1k, 100k - g10k - A1 - B4 - O6,
+            26 - E2, 1 - s200 - z200.BR - N50)
+        .Up              to 20 %
+                sequence divergence..TP.B splice Long -
+            read spliced                         alignment
+        .RB(-k15.B - w5-- splice - g2k - G200k - A1 - B2 - O2, 32 - E1,
+            0 - C9 - z200 - ub-- junc - bonus = 9 --cap - sw - mem =
+                                                    0.BR-- splice - flank = yes)
+        .In the splice mode,
+    1) long deletions are taken as introns and represented as the.RB ` N ' CIGAR
+                                                           operator; 2) long insertions are disabled; 3) deletion and insertion gap
 costs are different during chaining; 4) the computation of the
 .RB ` ms '
 tag ignores introns to demote hits to pseudogenes.
@@ -676,64 +653,57 @@ _
 
 .PP
 When alignment is available, column 11 gives the total number of sequence
-matches, mismatches and gaps in the alignment; column 10 divided by column 11
-gives the BLAST-like alignment identity. When alignment is unavailable,
-these two columns are approximate. PAF may optionally have additional fields in
-the SAM-like typed key-value format. Minimap2 may output the following tags:
-.TS
-center box;
-cb | cb | cb
-r | c | l .
-Tag	Type	Description
-_
-tp	A	Type of aln: P/primary, S/secondary and I,i/inversion
-cm	i	Number of minimizers on the chain
-s1	i	Chaining score
-s2	i	Chaining score of the best secondary chain
-NM	i	Total number of mismatches and gaps in the alignment
-MD	Z	To generate the ref sequence in the alignment
-AS	i	DP alignment score
-SA	Z	List of other supplementary alignments
-ms	i	DP score of the max scoring segment in the alignment
-nn	i	Number of ambiguous bases in the alignment
-ts	A	Transcript strand (splice mode only)
-cg	Z	CIGAR string (only in PAF)
-cs	Z	Difference string
-dv	f	Approximate per-base sequence divergence
-de	f	Gap-compressed per-base sequence divergence
-rl	i	Length of query regions harboring repetitive seeds
-.TE
+matches, mismatches and gaps in the alignment;
+column 10 divided by column 11 gives the BLAST -
+    like alignment identity.When alignment is unavailable,
+    these two columns are approximate.PAF may optionally have additional fields
+            in the        SAM -
+        like typed        key -
+        value format.Minimap2 may output the following tags :.TS center box;
+cb | cb | cb r | c | l.Tag Type Description _ tp A Type of aln : P / primary,
+    S / secondary and                                      I,
+    i / inversion cm i Number of minimizers on the chain s1 i Chaining score s2
+                    i Chaining score of the best secondary chain NM i Total
+                        number of mismatches and gaps in the alignment MD Z To
+                            generate the ref sequence in the alignment AS i DP
+                                alignment score SA Z List of other supplementary
+                                    alignments ms i DP score of the max scoring
+                                        segment in the alignment nn i Number of
+                                            ambiguous bases in the alignment ts
+                                                A Transcript
+                strand(splice mode only) cg Z CIGAR
+                string(only in PAF) cs Z Difference string dv f Approximate per
+            - base sequence divergence de f Gap - compressed per -
+            base sequence divergence rl i Length of query regions harboring
+            repetitive seeds
+                .TE
 
-.PP
-The
-.B cs
-tag encodes difference sequences in the short form or the entire query
-.I AND
-reference sequences in the long form. It consists of a series of operations:
-.TS
-center box;
-cb | cb |cb
-r | l | l .
-Op	Regex	Description
-_
- =	[ACGTN]+	Identical sequence (long form)
- :	[0-9]+	Identical sequence length
- *	[acgtn][acgtn]	Substitution: ref to query
- +	[acgtn]+	Insertion to the reference
- -	[acgtn]+	Deletion from the reference
- ~	[acgtn]{2}[0-9]+[acgtn]{2}	Intron length and splice signal
-.TE
+                .PP The.B cs tag encodes difference sequences in the short form
+        or the entire query.I AND reference sequences in the
+           long form.It consists of a series of operations :.TS center box;
+cb | cb | cb r | l |
+    l.Op Regex Description
+                              _ = [ACGTN] +
+                    Identical sequence(long form)
+    : [0 - 9] +
+    Identical sequence           length *[acgtn][ acgtn ] Substitution
+    : ref to                     query +
+      [acgtn] + Insertion to the reference - [acgtn] +
+      Deletion from the          reference ~[ acgtn ] { 2 }[ 0 - 9 ] +
+      [ acgtn ] { 2 } Intron length and
+                splice signal
+                            .TE
 
-.SH LIMITATIONS
-.TP 2
-*
-Minimap2 may produce suboptimal alignments through long low-complexity regions
-where seed positions may be suboptimal. This should not be a big concern
-because even the optimal alignment may be wrong in such regions.
-.TP
-*
-Minimap2 requires SSE2 or NEON instructions to compile. It is possible to add
-non-SSE2/NEON support, but it would make minimap2 slower by several times.
-.SH SEE ALSO
-.PP
-miniasm(1), minimap(1), bwa(1).
+                            .SH LIMITATIONS.TP 2 *
+                        Minimap2 may produce suboptimal alignments
+                            through long                           low -
+                    complexity regions where seed positions may be suboptimal
+                            .This should not be a big concern because even the
+                                optimal alignment may be wrong in such
+                                    regions..TP *
+                        Minimap2 requires SSE2 or
+            NEON instructions to compile.It is possible to add non -
+                SSE2 / NEON                                    support
+, but it would make minimap2 slower by several times..SH SEE ALSO.PP miniasm(1)
+, minimap(1)
+, bwa(1).
