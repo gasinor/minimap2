@@ -5,7 +5,7 @@
 #include <string.h>
 #include <windows.h>
 #include <immintrin.h>
-//#include<windows.h>
+
 
 
 
